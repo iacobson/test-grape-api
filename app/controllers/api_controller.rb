@@ -6,6 +6,7 @@
 
     mount UserAPI
     mount ArticleAPI
+    mount RedirectAPI
 
 
   end

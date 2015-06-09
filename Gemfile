@@ -48,3 +48,5 @@ end
 
 gem 'grape'
 gem 'hashie-forbidden_attributes'
+
+gem 'redis'
