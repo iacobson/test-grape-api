@@ -50,3 +50,4 @@ gem 'grape'
 gem 'hashie-forbidden_attributes'
 
 gem 'redis'
+gem 'connection_pool'
