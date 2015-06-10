@@ -18,11 +18,18 @@ class RedirectAPI < Grape::API
     desc "Create Shortcode"
     params do
       requires :shortcode, type: String
-      requires :url#, validate_url: true
+      # validate_url is a custom validator
+      # defined in lib/grape/validations/validate_url.rb
+      # validator initiated in config/initializers/grape_validations.rb
+      requires :url, validate_url: true
     end
     post do
       $redis.with do |redis|
-        redis.setnx "shortcodes:#{params[:shortcode]}", params[:url]
+        if redis.setnx "shortcodes:#{params[:shortcode]}", params[:url]
+          true
+        else
+          raise Grape::Exceptions::Validation, params: [params[:shortcode]], message: "shortcode already exists"
+        end
       end
     end
 
@@ -41,16 +48,16 @@ class RedirectAPI < Grape::API
       end
       delete do
         $redis.with do |redis|
-          redis.del "shortcodes:#{params[:shortcode]}"
+          @url = redis.get "shortcodes:#{params[:shortcode]}"
+          if @url != nil
+            redis.del "shortcodes:#{params[:shortcode]}"
+          else
+            raise Grape::Exceptions::Validation, params: [params[:shortcode]], message: "shortcode does not exist"
+          end
         end
       end
 
     end
 
-
-
-
-
   end
-
 end

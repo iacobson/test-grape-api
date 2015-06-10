@@ -46,6 +46,11 @@ group :development, :test do
   gem 'rspec-rails'
 end
 
+group :test do
+  gem "rspec"
+  gem "fakeredis", :require => "fakeredis/rspec"
+end
+
 gem 'grape'
 gem 'hashie-forbidden_attributes'
 
