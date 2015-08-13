@@ -64,11 +64,12 @@ describe RedirectAPI do
 
     it "returns error if shortcode not correct" do
       delete "/api/shortlinks/wrong"
-      expect(response.status).to eq(500)
-      expect(JSON.parse(response.body)).to eql({"error"=>"shortcode does not exist"})
+      expect(response.status).to eq(400)
+      expect(JSON.parse(response.body)).to eql({"error"=>"shortcode does not have a valid value"})
     end
 
     it "deletes the shortcode if correct" do
+      #TODO test not working
       delete "/api/shortlinks/short1"
       expect(response.status).to eq(200)
       $redis.with do |redis|

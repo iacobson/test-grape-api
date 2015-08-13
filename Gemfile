@@ -56,3 +56,5 @@ gem 'hashie-forbidden_attributes'
 
 gem 'redis'
 gem 'connection_pool'
+
+gem 'rails_admin'

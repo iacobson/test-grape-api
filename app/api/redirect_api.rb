@@ -43,8 +43,13 @@ class RedirectAPI < Grape::API
       end
 
       desc "Delete shortcode"
+
       params do
-        requires :shortcode, type: String
+        #move in helper?
+        $redis.with do |redis|
+          @params = redis.keys("shortcodes:*").map { |e| e.gsub("shortcodes:", "")}
+        end
+        requires :shortcode, values: @params
       end
       delete do
         $redis.with do |redis|
